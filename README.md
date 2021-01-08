@@ -19,6 +19,17 @@ Once you have the repo selected or manually entered, you will need to select the
 
 If you want to fork this repo, and then backup your local environment to your fork, check out [this link.](https://blog.postman.com/backup-and-sync-your-postman-collections-on-github/)
 
+## Getting Started with the Collection
+
+Once you have the collection imported you should select the imported environment and edit some variables. Specifically there are 4 variables you need to edit:
+
+* nmcserver
+* nmcport
+* nmcusername
+* nmcpassword
+
+Once you have those inplace you can run the "Login" request under the "Auth" folder, this will log you in to your NMC and store the auth token. You can then run other requests as needed. A great request to try first, to make sure you are logged in and everything is working is the "Get-Filers" request under the "Filers" folder. This should list all filers under NMC control.
+
 ## Contributing
 
 If you find something missing or incorrect we welcome pull requests. If you aren't sure what the fix is then please submit an issue and let us know what problem you are experiencing so we can figure out the fix together.
