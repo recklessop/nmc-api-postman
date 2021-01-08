@@ -1,0 +1,5421 @@
+{
+	"info": {
+		"_postman_id": "81dbe73d-ce8f-4b68-ab12-c5145c22ac86",
+		"name": "Nasuni",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var responseJson = pm.response.json();",
+									"pm.environment.set('currentAccessToken', responseJson.token)",
+									"pm.environment.set('accessTokenExpiry', responseJson.expires)    "
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\":\"{{nmcusername}}\",\n    \"password\":\"{{nmcpassword}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/auth/login/",
+							"protocol": "https",
+							"host": [
+								"{{nmcserver}}"
+							],
+							"port": "{{nmcport}}",
+							"path": [
+								"api",
+								"v1.1",
+								"auth",
+								"login",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var statMessages = responseCode.code; // it'll return numeric code e.g 200",
+									"",
+									"switch (statMessages) {",
+									"  case 200:",
+									"    console.log('Deleting currentAccessToken and accessTokenExpiry')",
+									"    pm.environment.unset('currentAccessToken')",
+									"    pm.environment.unset('accessTokenExpiry')",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/auth/logout/",
+							"protocol": "https",
+							"host": [
+								"{{nmcserver}}"
+							],
+							"port": "{{nmcport}}",
+							"path": [
+								"api",
+								"v1.1",
+								"auth",
+								"logout",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Index",
+			"item": [
+				{
+					"name": "Get-Index",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var getToken = true;",
+									"",
+									"if (!pm.environment.get('accessTokenExpiry') || ",
+									"    !pm.environment.get('currentAccessToken')) {",
+									"    console.log('Token or expiry date are missing')",
+									"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+									"    console.log('Token is expired')",
+									"} else {",
+									"    getToken = false;",
+									"    console.log('Token and expiry date are all good');",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/",
+							"protocol": "https",
+							"host": [
+								"{{nmcserver}}"
+							],
+							"port": "{{nmcport}}",
+							"path": [
+								"api",
+								"v1.1",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Account",
+			"item": [
+				{
+					"name": "Get-Cloud-Credentials",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var getToken = true;",
+									"",
+									"if (!pm.environment.get('accessTokenExpiry') || ",
+									"    !pm.environment.get('currentAccessToken')) {",
+									"    console.log('Token or expiry date are missing')",
+									"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+									"    console.log('Token is expired')",
+									"} else {",
+									"    getToken = false;",
+									"    console.log('Token and expiry date are all good');",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/account/cloud-credentials/",
+							"protocol": "https",
+							"host": [
+								"{{nmcserver}}"
+							],
+							"port": "{{nmcport}}",
+							"path": [
+								"api",
+								"v1.1",
+								"account",
+								"cloud-credentials",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get-Cloud-Credential-by-ID",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var getToken = true;",
+									"",
+									"if (!pm.environment.get('accessTokenExpiry') || ",
+									"    !pm.environment.get('currentAccessToken')) {",
+									"    console.log('Token or expiry date are missing')",
+									"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+									"    console.log('Token is expired')",
+									"} else {",
+									"    getToken = false;",
+									"    console.log('Token and expiry date are all good');",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/account/cloud-credentials/fd44b9ab5822b67eacc4909ba876d87e",
+							"protocol": "https",
+							"host": [
+								"{{nmcserver}}"
+							],
+							"port": "{{nmcport}}",
+							"path": [
+								"api",
+								"v1.1",
+								"account",
+								"cloud-credentials",
+								"fd44b9ab5822b67eacc4909ba876d87e"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Get-Cloud-Credential-by-ID",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/account/cloud-credentials/fd44b9ab5822b67eacc4909ba876d87e",
+									"protocol": "https",
+									"host": [
+										"{{nmcserver}}"
+									],
+									"port": "{{nmcport}}",
+									"path": [
+										"api",
+										"v1.1",
+										"account",
+										"cloud-credentials",
+										"fd44b9ab5822b67eacc4909ba876d87e"
+									],
+									"query": [
+										{
+											"key": "",
+											"value": null,
+											"disabled": true
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Thu, 07 Jan 2021 16:40:00 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "Apache"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=31536000"
+								},
+								{
+									"key": "Vary",
+									"value": "Cookie,Accept-Encoding"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "Allow",
+									"value": "GET, HEAD, OPTIONS"
+								},
+								{
+									"key": "Set-Cookie",
+									"value": "sessionid=nqe59obw1ys5uvlf771yz3539a3f3xwt; expires=Thu, 21-Jan-2021 16:40:00 GMT; httponly; Max-Age=1209600; Path=/; secure"
+								},
+								{
+									"key": "Content-Encoding",
+									"value": "gzip"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Content-Security-Policy",
+									"value": "frame-ancestors 'self';"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5, max=99"
+								},
+								{
+									"key": "Connection",
+									"value": "Keep-Alive"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"cred_id\": \"fd44b9ab5822b67eacc4909ba876d87e\",\n    \"name\": \"JP-Nasuni-Lab\",\n    \"filer_serial_number\": \"2eee8d55-43b5-4e34-a4a0-5be09dd255a9\",\n    \"cloud_provider\": \"Amazon S3\",\n    \"account\": \"AKIA35DLRRA7CRWOEWFS\",\n    \"hostname\": \"s3.amazonaws.com\",\n    \"status\": \"synced\",\n    \"note\": \"\",\n    \"in_use\": false,\n    \"links\": {\n        \"self\": {\n            \"href\": \"https://192.168.254.201/api/v1.1/account/cloud-credentials/fd44b9ab5822b67eacc4909ba876d87e/\",\n            \"method\": \"GET\"\n        }\n    }\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Filers",
+			"item": [
+				{
+					"name": "Get-Filers",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var getToken = true;",
+									"",
+									"if (!pm.environment.get('accessTokenExpiry') || ",
+									"    !pm.environment.get('currentAccessToken')) {",
+									"    console.log('Token or expiry date are missing')",
+									"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+									"    console.log('Token is expired')",
+									"} else {",
+									"    getToken = false;",
+									"    console.log('Token and expiry date are all good');",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/filers/",
+							"protocol": "https",
+							"host": [
+								"{{nmcserver}}"
+							],
+							"port": "{{nmcport}}",
+							"path": [
+								"api",
+								"v1.1",
+								"filers",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get-Filers-Health",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var getToken = true;",
+									"",
+									"if (!pm.environment.get('accessTokenExpiry') || ",
+									"    !pm.environment.get('currentAccessToken')) {",
+									"    console.log('Token or expiry date are missing')",
+									"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+									"    console.log('Token is expired')",
+									"} else {",
+									"    getToken = false;",
+									"    console.log('Token and expiry date are all good');",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/filers/health/",
+							"protocol": "https",
+							"host": [
+								"{{nmcserver}}"
+							],
+							"port": "{{nmcport}}",
+							"path": [
+								"api",
+								"v1.1",
+								"filers",
+								"health",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get-Filer-Health",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var getToken = true;",
+									"",
+									"if (!pm.environment.get('accessTokenExpiry') || ",
+									"    !pm.environment.get('currentAccessToken')) {",
+									"    console.log('Token or expiry date are missing')",
+									"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+									"    console.log('Token is expired')",
+									"} else {",
+									"    getToken = false;",
+									"    console.log('Token and expiry date are all good');",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/filers/{filer_serial}/health/",
+							"protocol": "https",
+							"host": [
+								"{{nmcserver}}"
+							],
+							"port": "{{nmcport}}",
+							"path": [
+								"api",
+								"v1.1",
+								"filers",
+								"{filer_serial}",
+								"health",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get-Encryption-Keys",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var getToken = true;",
+									"",
+									"if (!pm.environment.get('accessTokenExpiry') || ",
+									"    !pm.environment.get('currentAccessToken')) {",
+									"    console.log('Token or expiry date are missing')",
+									"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+									"    console.log('Token is expired')",
+									"} else {",
+									"    getToken = false;",
+									"    console.log('Token and expiry date are all good');",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/filers/encryption-keys/",
+							"protocol": "https",
+							"host": [
+								"{{nmcserver}}"
+							],
+							"port": "{{nmcport}}",
+							"path": [
+								"api",
+								"v1.1",
+								"filers",
+								"encryption-keys",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get-Encryption-Keys-for-a-Filer",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var getToken = true;",
+									"",
+									"if (!pm.environment.get('accessTokenExpiry') || ",
+									"    !pm.environment.get('currentAccessToken')) {",
+									"    console.log('Token or expiry date are missing')",
+									"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+									"    console.log('Token is expired')",
+									"} else {",
+									"    getToken = false;",
+									"    console.log('Token and expiry date are all good');",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/filers/{{filer_serial}}/encryption-keys/",
+							"protocol": "https",
+							"host": [
+								"{{nmcserver}}"
+							],
+							"port": "{{nmcport}}",
+							"path": [
+								"api",
+								"v1.1",
+								"filers",
+								"{{filer_serial}}",
+								"encryption-keys",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get-Encryption-Key-for-a-Filer",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var getToken = true;",
+									"",
+									"if (!pm.environment.get('accessTokenExpiry') || ",
+									"    !pm.environment.get('currentAccessToken')) {",
+									"    console.log('Token or expiry date are missing')",
+									"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+									"    console.log('Token is expired')",
+									"} else {",
+									"    getToken = false;",
+									"    console.log('Token and expiry date are all good');",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/filers/{{filer_serial}}/encryption-keys/{{encryption_key_id}}/",
+							"protocol": "https",
+							"host": [
+								"{{nmcserver}}"
+							],
+							"port": "{{nmcport}}",
+							"path": [
+								"api",
+								"v1.1",
+								"filers",
+								"{{filer_serial}}",
+								"encryption-keys",
+								"{{encryption_key_id}}",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get-CIFS-Clients-List",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var getToken = true;",
+									"",
+									"if (!pm.environment.get('accessTokenExpiry') || ",
+									"    !pm.environment.get('currentAccessToken')) {",
+									"    console.log('Token or expiry date are missing')",
+									"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+									"    console.log('Token is expired')",
+									"} else {",
+									"    getToken = false;",
+									"    console.log('Token and expiry date are all good');",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/filers/cifsclients/",
+							"protocol": "https",
+							"host": [
+								"{{nmcserver}}"
+							],
+							"port": "{{nmcport}}",
+							"path": [
+								"api",
+								"v1.1",
+								"filers",
+								"cifsclients",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get-CIFS-Clients-Locks",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var getToken = true;",
+									"",
+									"if (!pm.environment.get('accessTokenExpiry') || ",
+									"    !pm.environment.get('currentAccessToken')) {",
+									"    console.log('Token or expiry date are missing')",
+									"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+									"    console.log('Token is expired')",
+									"} else {",
+									"    getToken = false;",
+									"    console.log('Token and expiry date are all good');",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/filers/cifsclients/locks/",
+							"protocol": "https",
+							"host": [
+								"{{nmcserver}}"
+							],
+							"port": "{{nmcport}}",
+							"path": [
+								"api",
+								"v1.1",
+								"filers",
+								"cifsclients",
+								"locks",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get-CIFS-Client-Locks-on-a-Filer",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var getToken = true;",
+									"",
+									"if (!pm.environment.get('accessTokenExpiry') || ",
+									"    !pm.environment.get('currentAccessToken')) {",
+									"    console.log('Token or expiry date are missing')",
+									"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+									"    console.log('Token is expired')",
+									"} else {",
+									"    getToken = false;",
+									"    console.log('Token and expiry date are all good');",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/filers/{{filer_serial}}/cifsclients/locks/",
+							"protocol": "https",
+							"host": [
+								"{{nmcserver}}"
+							],
+							"port": "{{nmcport}}",
+							"path": [
+								"api",
+								"v1.1",
+								"filers",
+								"{{filer_serial}}",
+								"cifsclients",
+								"locks",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get-CIFS-Client-Locks",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var getToken = true;",
+									"",
+									"if (!pm.environment.get('accessTokenExpiry') || ",
+									"    !pm.environment.get('currentAccessToken')) {",
+									"    console.log('Token or expiry date are missing')",
+									"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+									"    console.log('Token is expired')",
+									"} else {",
+									"    getToken = false;",
+									"    console.log('Token and expiry date are all good');",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/filers/{{filer_serial}}/cifsclients/{{cifs_client_id}}/locks/",
+							"protocol": "https",
+							"host": [
+								"{{nmcserver}}"
+							],
+							"port": "{{nmcport}}",
+							"path": [
+								"api",
+								"v1.1",
+								"filers",
+								"{{filer_serial}}",
+								"cifsclients",
+								"{{cifs_client_id}}",
+								"locks",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get-FTP-Clients",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var getToken = true;",
+									"",
+									"if (!pm.environment.get('accessTokenExpiry') || ",
+									"    !pm.environment.get('currentAccessToken')) {",
+									"    console.log('Token or expiry date are missing')",
+									"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+									"    console.log('Token is expired')",
+									"} else {",
+									"    getToken = false;",
+									"    console.log('Token and expiry date are all good');",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1//filers/ftpclients/",
+							"protocol": "https",
+							"host": [
+								"{{nmcserver}}"
+							],
+							"port": "{{nmcport}}",
+							"path": [
+								"api",
+								"v1.1",
+								"",
+								"filers",
+								"ftpclients",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get-FTP-Clients-for-a-Filer",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var getToken = true;",
+									"",
+									"if (!pm.environment.get('accessTokenExpiry') || ",
+									"    !pm.environment.get('currentAccessToken')) {",
+									"    console.log('Token or expiry date are missing')",
+									"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+									"    console.log('Token is expired')",
+									"} else {",
+									"    getToken = false;",
+									"    console.log('Token and expiry date are all good');",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1//filers/{{filer_serial}}/ftpclients/",
+							"protocol": "https",
+							"host": [
+								"{{nmcserver}}"
+							],
+							"port": "{{nmcport}}",
+							"path": [
+								"api",
+								"v1.1",
+								"",
+								"filers",
+								"{{filer_serial}}",
+								"ftpclients",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get-FTP-Client",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var getToken = true;",
+									"",
+									"if (!pm.environment.get('accessTokenExpiry') || ",
+									"    !pm.environment.get('currentAccessToken')) {",
+									"    console.log('Token or expiry date are missing')",
+									"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+									"    console.log('Token is expired')",
+									"} else {",
+									"    getToken = false;",
+									"    console.log('Token and expiry date are all good');",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1//filers/{{filer_serial}}/ftpclients/{{ftp_client_id}}",
+							"protocol": "https",
+							"host": [
+								"{{nmcserver}}"
+							],
+							"port": "{{nmcport}}",
+							"path": [
+								"api",
+								"v1.1",
+								"",
+								"filers",
+								"{{filer_serial}}",
+								"ftpclients",
+								"{{ftp_client_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get-CIFS-Client",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var getToken = true;",
+									"",
+									"if (!pm.environment.get('accessTokenExpiry') || ",
+									"    !pm.environment.get('currentAccessToken')) {",
+									"    console.log('Token or expiry date are missing')",
+									"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+									"    console.log('Token is expired')",
+									"} else {",
+									"    getToken = false;",
+									"    console.log('Token and expiry date are all good');",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/filers/{{filer_serial}}/cifsclients/{{cifs_client_id}}",
+							"protocol": "https",
+							"host": [
+								"{{nmcserver}}"
+							],
+							"port": "{{nmcport}}",
+							"path": [
+								"api",
+								"v1.1",
+								"filers",
+								"{{filer_serial}}",
+								"cifsclients",
+								"{{cifs_client_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get-CIFS-Clients-for-a-Filer",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var getToken = true;",
+									"",
+									"if (!pm.environment.get('accessTokenExpiry') || ",
+									"    !pm.environment.get('currentAccessToken')) {",
+									"    console.log('Token or expiry date are missing')",
+									"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+									"    console.log('Token is expired')",
+									"} else {",
+									"    getToken = false;",
+									"    console.log('Token and expiry date are all good');",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/filers/{{filer_serial}}/cifsclients/",
+							"protocol": "https",
+							"host": [
+								"{{nmcserver}}"
+							],
+							"port": "{{nmcport}}",
+							"path": [
+								"api",
+								"v1.1",
+								"filers",
+								"{{filer_serial}}",
+								"cifsclients",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get-List-AMQP-Destinations",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var getToken = true;",
+									"",
+									"if (!pm.environment.get('accessTokenExpiry') || ",
+									"    !pm.environment.get('currentAccessToken')) {",
+									"    console.log('Token or expiry date are missing')",
+									"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+									"    console.log('Token is expired')",
+									"} else {",
+									"    getToken = false;",
+									"    console.log('Token and expiry date are all good');",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/filers/amqp-audit-destinations/",
+							"protocol": "https",
+							"host": [
+								"{{nmcserver}}"
+							],
+							"port": "{{nmcport}}",
+							"path": [
+								"api",
+								"v1.1",
+								"filers",
+								"amqp-audit-destinations",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get-Single-AMQP-Destinations",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var getToken = true;",
+									"",
+									"if (!pm.environment.get('accessTokenExpiry') || ",
+									"    !pm.environment.get('currentAccessToken')) {",
+									"    console.log('Token or expiry date are missing')",
+									"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+									"    console.log('Token is expired')",
+									"} else {",
+									"    getToken = false;",
+									"    console.log('Token and expiry date are all good');",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/filers/{{filer_serial}}/amqp-audit-destinations/{{amqp_destination_name}}",
+							"protocol": "https",
+							"host": [
+								"{{nmcserver}}"
+							],
+							"port": "{{nmcport}}",
+							"path": [
+								"api",
+								"v1.1",
+								"filers",
+								"{{filer_serial}}",
+								"amqp-audit-destinations",
+								"{{amqp_destination_name}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Patch-Update-an-AMQP-Destination",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var getToken = true;",
+									"",
+									"if (!pm.environment.get('accessTokenExpiry') || ",
+									"    !pm.environment.get('currentAccessToken')) {",
+									"    console.log('Token or expiry date are missing')",
+									"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+									"    console.log('Token is expired')",
+									"} else {",
+									"    getToken = false;",
+									"    console.log('Token and expiry date are all good');",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/filers/{{filer_serial}}/amqp-audit-destinations/{{amqp_destination_name}}",
+							"protocol": "https",
+							"host": [
+								"{{nmcserver}}"
+							],
+							"port": "{{nmcport}}",
+							"path": [
+								"api",
+								"v1.1",
+								"filers",
+								"{{filer_serial}}",
+								"amqp-audit-destinations",
+								"{{amqp_destination_name}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Patch-Update-an-AMQP-Destination Copy",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var getToken = true;",
+									"",
+									"if (!pm.environment.get('accessTokenExpiry') || ",
+									"    !pm.environment.get('currentAccessToken')) {",
+									"    console.log('Token or expiry date are missing')",
+									"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+									"    console.log('Token is expired')",
+									"} else {",
+									"    getToken = false;",
+									"    console.log('Token and expiry date are all good');",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/filers/{{filer_serial}}/amqp-audit-destinations/{{amqp_destination_name}}",
+							"protocol": "https",
+							"host": [
+								"{{nmcserver}}"
+							],
+							"port": "{{nmcport}}",
+							"path": [
+								"api",
+								"v1.1",
+								"filers",
+								"{{filer_serial}}",
+								"amqp-audit-destinations",
+								"{{amqp_destination_name}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post-Create-AMQP-Destination",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var getToken = true;",
+									"",
+									"if (!pm.environment.get('accessTokenExpiry') || ",
+									"    !pm.environment.get('currentAccessToken')) {",
+									"    console.log('Token or expiry date are missing')",
+									"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+									"    console.log('Token is expired')",
+									"} else {",
+									"    getToken = false;",
+									"    console.log('Token and expiry date are all good');",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/filers/{filer_serial}/amqp-audit-destinations/",
+							"protocol": "https",
+							"host": [
+								"{{nmcserver}}"
+							],
+							"port": "{{nmcport}}",
+							"path": [
+								"api",
+								"v1.1",
+								"filers",
+								"{filer_serial}",
+								"amqp-audit-destinations",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Patch-Update-Filer",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var getToken = true;",
+									"",
+									"if (!pm.environment.get('accessTokenExpiry') || ",
+									"    !pm.environment.get('currentAccessToken')) {",
+									"    console.log('Token or expiry date are missing')",
+									"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+									"    console.log('Token is expired')",
+									"} else {",
+									"    getToken = false;",
+									"    console.log('Token and expiry date are all good');",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"description\": \"Updated Filer string\"\n}"
+						},
+						"url": {
+							"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/filers/{filer_serial}",
+							"protocol": "https",
+							"host": [
+								"{{nmcserver}}"
+							],
+							"port": "{{nmcport}}",
+							"path": [
+								"api",
+								"v1.1",
+								"filers",
+								"{filer_serial}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Volumes",
+			"item": [
+				{
+					"name": "Antivirus",
+					"item": [
+						{
+							"name": "Get-Antivirus-Violations",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var getToken = true;",
+											"",
+											"if (!pm.environment.get('accessTokenExpiry') || ",
+											"    !pm.environment.get('currentAccessToken')) {",
+											"    console.log('Token or expiry date are missing')",
+											"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+											"    console.log('Token is expired')",
+											"} else {",
+											"    getToken = false;",
+											"    console.log('Token and expiry date are all good');",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/volumes/filers/antivirus-violations/",
+									"protocol": "https",
+									"host": [
+										"{{nmcserver}}"
+									],
+									"port": "{{nmcport}}",
+									"path": [
+										"api",
+										"v1.1",
+										"volumes",
+										"filers",
+										"antivirus-violations",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get-Antivirus-Violations-for-Volume",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var getToken = true;",
+											"",
+											"if (!pm.environment.get('accessTokenExpiry') || ",
+											"    !pm.environment.get('currentAccessToken')) {",
+											"    console.log('Token or expiry date are missing')",
+											"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+											"    console.log('Token is expired')",
+											"} else {",
+											"    getToken = false;",
+											"    console.log('Token and expiry date are all good');",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/volumes/{{volume_guid}}/filers/antivirus-violations/",
+									"protocol": "https",
+									"host": [
+										"{{nmcserver}}"
+									],
+									"port": "{{nmcport}}",
+									"path": [
+										"api",
+										"v1.1",
+										"volumes",
+										"{{volume_guid}}",
+										"filers",
+										"antivirus-violations",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get-Antivirus-Violations-for-Volumeand-Filer",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var getToken = true;",
+											"",
+											"if (!pm.environment.get('accessTokenExpiry') || ",
+											"    !pm.environment.get('currentAccessToken')) {",
+											"    console.log('Token or expiry date are missing')",
+											"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+											"    console.log('Token is expired')",
+											"} else {",
+											"    getToken = false;",
+											"    console.log('Token and expiry date are all good');",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/volumes/{{volume_guid}}/filers/{{filer_serial}}/antivirus-violations/",
+									"protocol": "https",
+									"host": [
+										"{{nmcserver}}"
+									],
+									"port": "{{nmcport}}",
+									"path": [
+										"api",
+										"v1.1",
+										"volumes",
+										"{{volume_guid}}",
+										"filers",
+										"{{filer_serial}}",
+										"antivirus-violations",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get-Antivirus-Violation",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var getToken = true;",
+											"",
+											"if (!pm.environment.get('accessTokenExpiry') || ",
+											"    !pm.environment.get('currentAccessToken')) {",
+											"    console.log('Token or expiry date are missing')",
+											"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+											"    console.log('Token is expired')",
+											"} else {",
+											"    getToken = false;",
+											"    console.log('Token and expiry date are all good');",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/volumes/{{volume_guid}}/filers/{{filer_serial}}/antivirus-violations/{{antivirus_id}}/",
+									"protocol": "https",
+									"host": [
+										"{{nmcserver}}"
+									],
+									"port": "{{nmcport}}",
+									"path": [
+										"api",
+										"v1.1",
+										"volumes",
+										"{{volume_guid}}",
+										"filers",
+										"{{filer_serial}}",
+										"antivirus-violations",
+										"{{antivirus_id}}",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Exports",
+					"item": [
+						{
+							"name": "Get-Export",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var getToken = true;",
+											"",
+											"if (!pm.environment.get('accessTokenExpiry') || ",
+											"    !pm.environment.get('currentAccessToken')) {",
+											"    console.log('Token or expiry date are missing')",
+											"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+											"    console.log('Token is expired')",
+											"} else {",
+											"    getToken = false;",
+											"    console.log('Token and expiry date are all good');",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/volumes/{{volume_guid}}/filers/{{filer_serial}}/exports/{{export_id}}",
+									"protocol": "https",
+									"host": [
+										"{{nmcserver}}"
+									],
+									"port": "{{nmcport}}",
+									"path": [
+										"api",
+										"v1.1",
+										"volumes",
+										"{{volume_guid}}",
+										"filers",
+										"{{filer_serial}}",
+										"exports",
+										"{{export_id}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get-Exports",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var getToken = true;",
+											"",
+											"if (!pm.environment.get('accessTokenExpiry') || ",
+											"    !pm.environment.get('currentAccessToken')) {",
+											"    console.log('Token or expiry date are missing')",
+											"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+											"    console.log('Token is expired')",
+											"} else {",
+											"    getToken = false;",
+											"    console.log('Token and expiry date are all good');",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/volumes/filers/exports/",
+									"protocol": "https",
+									"host": [
+										"{{nmcserver}}"
+									],
+									"port": "{{nmcport}}",
+									"path": [
+										"api",
+										"v1.1",
+										"volumes",
+										"filers",
+										"exports",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get-Exports-for-a-Volume",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var getToken = true;",
+											"",
+											"if (!pm.environment.get('accessTokenExpiry') || ",
+											"    !pm.environment.get('currentAccessToken')) {",
+											"    console.log('Token or expiry date are missing')",
+											"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+											"    console.log('Token is expired')",
+											"} else {",
+											"    getToken = false;",
+											"    console.log('Token and expiry date are all good');",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/volumes/{{volume_guid}}/filers/exports/",
+									"protocol": "https",
+									"host": [
+										"{{nmcserver}}"
+									],
+									"port": "{{nmcport}}",
+									"path": [
+										"api",
+										"v1.1",
+										"volumes",
+										"{{volume_guid}}",
+										"filers",
+										"exports",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get-Exports-for-a-Volume-and-Filer",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var getToken = true;",
+											"",
+											"if (!pm.environment.get('accessTokenExpiry') || ",
+											"    !pm.environment.get('currentAccessToken')) {",
+											"    console.log('Token or expiry date are missing')",
+											"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+											"    console.log('Token is expired')",
+											"} else {",
+											"    getToken = false;",
+											"    console.log('Token and expiry date are all good');",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/volumes/{{volume_guid}}/filers/{{filer_serial}}/exports/",
+									"protocol": "https",
+									"host": [
+										"{{nmcserver}}"
+									],
+									"port": "{{nmcport}}",
+									"path": [
+										"api",
+										"v1.1",
+										"volumes",
+										"{{volume_guid}}",
+										"filers",
+										"{{filer_serial}}",
+										"exports",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "FTP",
+					"item": [
+						{
+							"name": "Get-FTP-Directories",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var getToken = true;",
+											"",
+											"if (!pm.environment.get('accessTokenExpiry') || ",
+											"    !pm.environment.get('currentAccessToken')) {",
+											"    console.log('Token or expiry date are missing')",
+											"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+											"    console.log('Token is expired')",
+											"} else {",
+											"    getToken = false;",
+											"    console.log('Token and expiry date are all good');",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/volumes/filers/ftp-directories/",
+									"protocol": "https",
+									"host": [
+										"{{nmcserver}}"
+									],
+									"port": "{{nmcport}}",
+									"path": [
+										"api",
+										"v1.1",
+										"volumes",
+										"filers",
+										"ftp-directories",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get-FTP-Directories-for-a-Volume",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var getToken = true;",
+											"",
+											"if (!pm.environment.get('accessTokenExpiry') || ",
+											"    !pm.environment.get('currentAccessToken')) {",
+											"    console.log('Token or expiry date are missing')",
+											"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+											"    console.log('Token is expired')",
+											"} else {",
+											"    getToken = false;",
+											"    console.log('Token and expiry date are all good');",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/volumes/{{volumed_guid}}/filers/ftp-directories/",
+									"protocol": "https",
+									"host": [
+										"{{nmcserver}}"
+									],
+									"port": "{{nmcport}}",
+									"path": [
+										"api",
+										"v1.1",
+										"volumes",
+										"{{volumed_guid}}",
+										"filers",
+										"ftp-directories",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get-FTP-Directories-for-a-Volume-and-Filer",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var getToken = true;",
+											"",
+											"if (!pm.environment.get('accessTokenExpiry') || ",
+											"    !pm.environment.get('currentAccessToken')) {",
+											"    console.log('Token or expiry date are missing')",
+											"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+											"    console.log('Token is expired')",
+											"} else {",
+											"    getToken = false;",
+											"    console.log('Token and expiry date are all good');",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/volumes/{{volumed_guid}}/filers/{{filer_serial}}/ftp-directories/",
+									"protocol": "https",
+									"host": [
+										"{{nmcserver}}"
+									],
+									"port": "{{nmcport}}",
+									"path": [
+										"api",
+										"v1.1",
+										"volumes",
+										"{{volumed_guid}}",
+										"filers",
+										"{{filer_serial}}",
+										"ftp-directories",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get-FTP-Directory",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var getToken = true;",
+											"",
+											"if (!pm.environment.get('accessTokenExpiry') || ",
+											"    !pm.environment.get('currentAccessToken')) {",
+											"    console.log('Token or expiry date are missing')",
+											"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+											"    console.log('Token is expired')",
+											"} else {",
+											"    getToken = false;",
+											"    console.log('Token and expiry date are all good');",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/volumes/{{volumed_guid}}/filers/{{filer_serial}}/ftp-directories/{{ftpdir_id}}/",
+									"protocol": "https",
+									"host": [
+										"{{nmcserver}}"
+									],
+									"port": "{{nmcport}}",
+									"path": [
+										"api",
+										"v1.1",
+										"volumes",
+										"{{volumed_guid}}",
+										"filers",
+										"{{filer_serial}}",
+										"ftp-directories",
+										"{{ftpdir_id}}",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Folder Quotas",
+					"item": [
+						{
+							"name": "Get-Folder-Quotas",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var getToken = true;",
+											"",
+											"if (!pm.environment.get('accessTokenExpiry') || ",
+											"    !pm.environment.get('currentAccessToken')) {",
+											"    console.log('Token or expiry date are missing')",
+											"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+											"    console.log('Token is expired')",
+											"} else {",
+											"    getToken = false;",
+											"    console.log('Token and expiry date are all good');",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/volumes/folder-quotas/",
+									"protocol": "https",
+									"host": [
+										"{{nmcserver}}"
+									],
+									"port": "{{nmcport}}",
+									"path": [
+										"api",
+										"v1.1",
+										"volumes",
+										"folder-quotas",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get-Folder-Quotas-for-a-Volume",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var getToken = true;",
+											"",
+											"if (!pm.environment.get('accessTokenExpiry') || ",
+											"    !pm.environment.get('currentAccessToken')) {",
+											"    console.log('Token or expiry date are missing')",
+											"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+											"    console.log('Token is expired')",
+											"} else {",
+											"    getToken = false;",
+											"    console.log('Token and expiry date are all good');",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/volumes{{volume_guid}}/folder-quotas/",
+									"protocol": "https",
+									"host": [
+										"{{nmcserver}}"
+									],
+									"port": "{{nmcport}}",
+									"path": [
+										"api",
+										"v1.1",
+										"volumes{{volume_guid}}",
+										"folder-quotas",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Post-Folder-Quota",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var getToken = true;",
+											"",
+											"if (!pm.environment.get('accessTokenExpiry') || ",
+											"    !pm.environment.get('currentAccessToken')) {",
+											"    console.log('Token or expiry date are missing')",
+											"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+											"    console.log('Token is expired')",
+											"} else {",
+											"    getToken = false;",
+											"    console.log('Token and expiry date are all good');",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"type\": \"rule\",\n  \"path\": \"string\",\n  \"email\": \"string\",\n  \"limit\": 0,\n  \"children\": true\n}"
+								},
+								"url": {
+									"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/volumes{{volume_guid}}/folder-quotas/",
+									"protocol": "https",
+									"host": [
+										"{{nmcserver}}"
+									],
+									"port": "{{nmcport}}",
+									"path": [
+										"api",
+										"v1.1",
+										"volumes{{volume_guid}}",
+										"folder-quotas",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get-Folder-Quota",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var getToken = true;",
+											"",
+											"if (!pm.environment.get('accessTokenExpiry') || ",
+											"    !pm.environment.get('currentAccessToken')) {",
+											"    console.log('Token or expiry date are missing')",
+											"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+											"    console.log('Token is expired')",
+											"} else {",
+											"    getToken = false;",
+											"    console.log('Token and expiry date are all good');",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/volumes{{volume_guid}}/folder-quotas/{{folder_quota_id}}/",
+									"protocol": "https",
+									"host": [
+										"{{nmcserver}}"
+									],
+									"port": "{{nmcport}}",
+									"path": [
+										"api",
+										"v1.1",
+										"volumes{{volume_guid}}",
+										"folder-quotas",
+										"{{folder_quota_id}}",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete-Folder-Quota",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var getToken = true;",
+											"",
+											"if (!pm.environment.get('accessTokenExpiry') || ",
+											"    !pm.environment.get('currentAccessToken')) {",
+											"    console.log('Token or expiry date are missing')",
+											"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+											"    console.log('Token is expired')",
+											"} else {",
+											"    getToken = false;",
+											"    console.log('Token and expiry date are all good');",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/volumes{{volume_guid}}/folder-quotas/{{folder_quota_id}}/",
+									"protocol": "https",
+									"host": [
+										"{{nmcserver}}"
+									],
+									"port": "{{nmcport}}",
+									"path": [
+										"api",
+										"v1.1",
+										"volumes{{volume_guid}}",
+										"folder-quotas",
+										"{{folder_quota_id}}",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get-Folder-Quota-for-a-Volume",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var getToken = true;",
+											"",
+											"if (!pm.environment.get('accessTokenExpiry') || ",
+											"    !pm.environment.get('currentAccessToken')) {",
+											"    console.log('Token or expiry date are missing')",
+											"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+											"    console.log('Token is expired')",
+											"} else {",
+											"    getToken = false;",
+											"    console.log('Token and expiry date are all good');",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"type\": \"rule\",\n  \"path\": \"string\",\n  \"email\": \"string\",\n  \"limit\": 0,\n  \"children\": true\n}"
+								},
+								"url": {
+									"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/volumes{{volume_guid}}/folder-quotas/{{folder_quota_id}}/",
+									"protocol": "https",
+									"host": [
+										"{{nmcserver}}"
+									],
+									"port": "{{nmcport}}",
+									"path": [
+										"api",
+										"v1.1",
+										"volumes{{volume_guid}}",
+										"folder-quotas",
+										"{{folder_quota_id}}",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Paths",
+					"item": [
+						{
+							"name": "Get-Paths",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var getToken = true;",
+											"",
+											"if (!pm.environment.get('accessTokenExpiry') || ",
+											"    !pm.environment.get('currentAccessToken')) {",
+											"    console.log('Token or expiry date are missing')",
+											"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+											"    console.log('Token is expired')",
+											"} else {",
+											"    getToken = false;",
+											"    console.log('Token and expiry date are all good');",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/volumes/filers/paths",
+									"protocol": "https",
+									"host": [
+										"{{nmcserver}}"
+									],
+									"port": "{{nmcport}}",
+									"path": [
+										"api",
+										"v1.1",
+										"volumes",
+										"filers",
+										"paths"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get-Paths-in-a-Volume",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var getToken = true;",
+											"",
+											"if (!pm.environment.get('accessTokenExpiry') || ",
+											"    !pm.environment.get('currentAccessToken')) {",
+											"    console.log('Token or expiry date are missing')",
+											"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+											"    console.log('Token is expired')",
+											"} else {",
+											"    getToken = false;",
+											"    console.log('Token and expiry date are all good');",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/volumes/{{volume_guid}}/filers/paths",
+									"protocol": "https",
+									"host": [
+										"{{nmcserver}}"
+									],
+									"port": "{{nmcport}}",
+									"path": [
+										"api",
+										"v1.1",
+										"volumes",
+										"{{volume_guid}}",
+										"filers",
+										"paths"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get-Paths-in-a-Volume-on-a-Filer",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var getToken = true;",
+											"",
+											"if (!pm.environment.get('accessTokenExpiry') || ",
+											"    !pm.environment.get('currentAccessToken')) {",
+											"    console.log('Token or expiry date are missing')",
+											"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+											"    console.log('Token is expired')",
+											"} else {",
+											"    getToken = false;",
+											"    console.log('Token and expiry date are all good');",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/volumes/{{volume_guid}}/filers/{{filer_serial}}/paths",
+									"protocol": "https",
+									"host": [
+										"{{nmcserver}}"
+									],
+									"port": "{{nmcport}}",
+									"path": [
+										"api",
+										"v1.1",
+										"volumes",
+										"{{volume_guid}}",
+										"filers",
+										"{{filer_serial}}",
+										"paths"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get-Info-on-a-specific-Path",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var getToken = true;",
+											"",
+											"if (!pm.environment.get('accessTokenExpiry') || ",
+											"    !pm.environment.get('currentAccessToken')) {",
+											"    console.log('Token or expiry date are missing')",
+											"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+											"    console.log('Token is expired')",
+											"} else {",
+											"    getToken = false;",
+											"    console.log('Token and expiry date are all good');",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/volumes/{{volume_guid}}/filers/{{filer_serial}}/path/{{path}}",
+									"protocol": "https",
+									"host": [
+										"{{nmcserver}}"
+									],
+									"port": "{{nmcport}}",
+									"path": [
+										"api",
+										"v1.1",
+										"volumes",
+										"{{volume_guid}}",
+										"filers",
+										"{{filer_serial}}",
+										"path",
+										"{{path}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Post-Refresh-specific-Path-Info",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var getToken = true;",
+											"",
+											"if (!pm.environment.get('accessTokenExpiry') || ",
+											"    !pm.environment.get('currentAccessToken')) {",
+											"    console.log('Token or expiry date are missing')",
+											"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+											"    console.log('Token is expired')",
+											"} else {",
+											"    getToken = false;",
+											"    console.log('Token and expiry date are all good');",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/volumes/{{volume_guid}}/filers/{{filer_serial}}/path/{{path}}",
+									"protocol": "https",
+									"host": [
+										"{{nmcserver}}"
+									],
+									"port": "{{nmcport}}",
+									"path": [
+										"api",
+										"v1.1",
+										"volumes",
+										"{{volume_guid}}",
+										"filers",
+										"{{filer_serial}}",
+										"path",
+										"{{path}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Post-Try-to-make-a-path",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var getToken = true;",
+											"",
+											"if (!pm.environment.get('accessTokenExpiry') || ",
+											"    !pm.environment.get('currentAccessToken')) {",
+											"    console.log('Token or expiry date are missing')",
+											"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+											"    console.log('Token is expired')",
+											"} else {",
+											"    getToken = false;",
+											"    console.log('Token and expiry date are all good');",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"path\": \"/my/new/path\"\n}"
+								},
+								"url": {
+									"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/volumes/{{volume_guid}}/filers/{{filer_serial}}/make-dir-path/",
+									"protocol": "https",
+									"host": [
+										"{{nmcserver}}"
+									],
+									"port": "{{nmcport}}",
+									"path": [
+										"api",
+										"v1.1",
+										"volumes",
+										"{{volume_guid}}",
+										"filers",
+										"{{filer_serial}}",
+										"make-dir-path",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get-Pinned-Folders",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var getToken = true;",
+											"",
+											"if (!pm.environment.get('accessTokenExpiry') || ",
+											"    !pm.environment.get('currentAccessToken')) {",
+											"    console.log('Token or expiry date are missing')",
+											"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+											"    console.log('Token is expired')",
+											"} else {",
+											"    getToken = false;",
+											"    console.log('Token and expiry date are all good');",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/volumes/filers/pinned-folders/",
+									"protocol": "https",
+									"host": [
+										"{{nmcserver}}"
+									],
+									"port": "{{nmcport}}",
+									"path": [
+										"api",
+										"v1.1",
+										"volumes",
+										"filers",
+										"pinned-folders",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get-Pinned-Foldersin-a-Volume",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var getToken = true;",
+											"",
+											"if (!pm.environment.get('accessTokenExpiry') || ",
+											"    !pm.environment.get('currentAccessToken')) {",
+											"    console.log('Token or expiry date are missing')",
+											"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+											"    console.log('Token is expired')",
+											"} else {",
+											"    getToken = false;",
+											"    console.log('Token and expiry date are all good');",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/volumes/{{volume_guid}}/filers/pinned-folders/",
+									"protocol": "https",
+									"host": [
+										"{{nmcserver}}"
+									],
+									"port": "{{nmcport}}",
+									"path": [
+										"api",
+										"v1.1",
+										"volumes",
+										"{{volume_guid}}",
+										"filers",
+										"pinned-folders",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get-Pinned-Foldersin-a-Volume-on-a-Filer",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var getToken = true;",
+											"",
+											"if (!pm.environment.get('accessTokenExpiry') || ",
+											"    !pm.environment.get('currentAccessToken')) {",
+											"    console.log('Token or expiry date are missing')",
+											"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+											"    console.log('Token is expired')",
+											"} else {",
+											"    getToken = false;",
+											"    console.log('Token and expiry date are all good');",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/volumes/{{volume_guid}}/filers/{{filer_serial}}/pinned-folders/",
+									"protocol": "https",
+									"host": [
+										"{{nmcserver}}"
+									],
+									"port": "{{nmcport}}",
+									"path": [
+										"api",
+										"v1.1",
+										"volumes",
+										"{{volume_guid}}",
+										"filers",
+										"{{filer_serial}}",
+										"pinned-folders",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Post-Set-Pinning-Mode",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var getToken = true;",
+											"",
+											"if (!pm.environment.get('accessTokenExpiry') || ",
+											"    !pm.environment.get('currentAccessToken')) {",
+											"    console.log('Token or expiry date are missing')",
+											"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+											"    console.log('Token is expired')",
+											"} else {",
+											"    getToken = false;",
+											"    console.log('Token and expiry date are all good');",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"path\": \"string\",\n  \"mode\": \"metadata_and_data\"\n}"
+								},
+								"url": {
+									"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/volumes/{{volume_guid}}/filers/{{filer_serial}}/pinned-folders/",
+									"protocol": "https",
+									"host": [
+										"{{nmcserver}}"
+									],
+									"port": "{{nmcport}}",
+									"path": [
+										"api",
+										"v1.1",
+										"volumes",
+										"{{volume_guid}}",
+										"filers",
+										"{{filer_serial}}",
+										"pinned-folders",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Post-Set-Pinning-Mode Copy",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var getToken = true;",
+											"",
+											"if (!pm.environment.get('accessTokenExpiry') || ",
+											"    !pm.environment.get('currentAccessToken')) {",
+											"    console.log('Token or expiry date are missing')",
+											"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+											"    console.log('Token is expired')",
+											"} else {",
+											"    getToken = false;",
+											"    console.log('Token and expiry date are all good');",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/volumes/{{volume_guid}}/filers/{{filer_serial}}/pinned-folders/{{path}}",
+									"protocol": "https",
+									"host": [
+										"{{nmcserver}}"
+									],
+									"port": "{{nmcport}}",
+									"path": [
+										"api",
+										"v1.1",
+										"volumes",
+										"{{volume_guid}}",
+										"filers",
+										"{{filer_serial}}",
+										"pinned-folders",
+										"{{path}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete-Pinning-Mode-on-a-Folder",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var getToken = true;",
+											"",
+											"if (!pm.environment.get('accessTokenExpiry') || ",
+											"    !pm.environment.get('currentAccessToken')) {",
+											"    console.log('Token or expiry date are missing')",
+											"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+											"    console.log('Token is expired')",
+											"} else {",
+											"    getToken = false;",
+											"    console.log('Token and expiry date are all good');",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/volumes/{{volume_guid}}/filers/{{filer_serial}}/pinned-folders/{{path}}",
+									"protocol": "https",
+									"host": [
+										"{{nmcserver}}"
+									],
+									"port": "{{nmcport}}",
+									"path": [
+										"api",
+										"v1.1",
+										"volumes",
+										"{{volume_guid}}",
+										"filers",
+										"{{filer_serial}}",
+										"pinned-folders",
+										"{{path}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get-Auth-Cache-Enabled-Folders",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var getToken = true;",
+											"",
+											"if (!pm.environment.get('accessTokenExpiry') || ",
+											"    !pm.environment.get('currentAccessToken')) {",
+											"    console.log('Token or expiry date are missing')",
+											"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+											"    console.log('Token is expired')",
+											"} else {",
+											"    getToken = false;",
+											"    console.log('Token and expiry date are all good');",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/volumes/filers/auto-cached-folders/",
+									"protocol": "https",
+									"host": [
+										"{{nmcserver}}"
+									],
+									"port": "{{nmcport}}",
+									"path": [
+										"api",
+										"v1.1",
+										"volumes",
+										"filers",
+										"auto-cached-folders",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get-Auth-Cache-Enabled-Folders-in-a-Volume",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var getToken = true;",
+											"",
+											"if (!pm.environment.get('accessTokenExpiry') || ",
+											"    !pm.environment.get('currentAccessToken')) {",
+											"    console.log('Token or expiry date are missing')",
+											"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+											"    console.log('Token is expired')",
+											"} else {",
+											"    getToken = false;",
+											"    console.log('Token and expiry date are all good');",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/volumes/{{volume_guid}}/filers/auto-cached-folders/",
+									"protocol": "https",
+									"host": [
+										"{{nmcserver}}"
+									],
+									"port": "{{nmcport}}",
+									"path": [
+										"api",
+										"v1.1",
+										"volumes",
+										"{{volume_guid}}",
+										"filers",
+										"auto-cached-folders",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get-Auto-Cache-Enabled-Folders-in-a-Volume-on-a-Filer",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var getToken = true;",
+											"",
+											"if (!pm.environment.get('accessTokenExpiry') || ",
+											"    !pm.environment.get('currentAccessToken')) {",
+											"    console.log('Token or expiry date are missing')",
+											"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+											"    console.log('Token is expired')",
+											"} else {",
+											"    getToken = false;",
+											"    console.log('Token and expiry date are all good');",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/volumes/{{volume_guid}}/filers/{{filer_serial}}/auto-cached-folders/",
+									"protocol": "https",
+									"host": [
+										"{{nmcserver}}"
+									],
+									"port": "{{nmcport}}",
+									"path": [
+										"api",
+										"v1.1",
+										"volumes",
+										"{{volume_guid}}",
+										"filers",
+										"{{filer_serial}}",
+										"auto-cached-folders",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get-Auto-Cache-Folder-Status-on-a-Folder",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var getToken = true;",
+											"",
+											"if (!pm.environment.get('accessTokenExpiry') || ",
+											"    !pm.environment.get('currentAccessToken')) {",
+											"    console.log('Token or expiry date are missing')",
+											"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+											"    console.log('Token is expired')",
+											"} else {",
+											"    getToken = false;",
+											"    console.log('Token and expiry date are all good');",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/volumes/{{volume_guid}}/filers/{{filer_serial}}/auto-cached-folders/{{path}}",
+									"protocol": "https",
+									"host": [
+										"{{nmcserver}}"
+									],
+									"port": "{{nmcport}}",
+									"path": [
+										"api",
+										"v1.1",
+										"volumes",
+										"{{volume_guid}}",
+										"filers",
+										"{{filer_serial}}",
+										"auto-cached-folders",
+										"{{path}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete-Auto-Cache-Mode-on-a-Folder",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var getToken = true;",
+											"",
+											"if (!pm.environment.get('accessTokenExpiry') || ",
+											"    !pm.environment.get('currentAccessToken')) {",
+											"    console.log('Token or expiry date are missing')",
+											"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+											"    console.log('Token is expired')",
+											"} else {",
+											"    getToken = false;",
+											"    console.log('Token and expiry date are all good');",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/volumes/{{volume_guid}}/filers/{{filer_serial}}/auto-cached-folders/{{path}}",
+									"protocol": "https",
+									"host": [
+										"{{nmcserver}}"
+									],
+									"port": "{{nmcport}}",
+									"path": [
+										"api",
+										"v1.1",
+										"volumes",
+										"{{volume_guid}}",
+										"filers",
+										"{{filer_serial}}",
+										"auto-cached-folders",
+										"{{path}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Shares",
+					"item": [
+						{
+							"name": "Get-Share",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var getToken = true;",
+											"",
+											"if (!pm.environment.get('accessTokenExpiry') || ",
+											"    !pm.environment.get('currentAccessToken')) {",
+											"    console.log('Token or expiry date are missing')",
+											"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+											"    console.log('Token is expired')",
+											"} else {",
+											"    getToken = false;",
+											"    console.log('Token and expiry date are all good');",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/volumes/{{volume_guid}}/filers/{{filer_serial}}/shares/{{share_id}}/",
+									"protocol": "https",
+									"host": [
+										"{{nmcserver}}"
+									],
+									"port": "{{nmcport}}",
+									"path": [
+										"api",
+										"v1.1",
+										"volumes",
+										"{{volume_guid}}",
+										"filers",
+										"{{filer_serial}}",
+										"shares",
+										"{{share_id}}",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Patch-Share",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var getToken = true;",
+											"",
+											"if (!pm.environment.get('accessTokenExpiry') || ",
+											"    !pm.environment.get('currentAccessToken')) {",
+											"    console.log('Token or expiry date are missing')",
+											"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+											"    console.log('Token is expired')",
+											"} else {",
+											"    getToken = false;",
+											"    console.log('Token and expiry date are all good');",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"string\",\n  \"path\": \"string\",\n  \"comment\": \"string\",\n  \"readonly\": false,\n  \"browseable\": true,\n  \"hosts_allow\": \"\",\n  \"hide_unreadable\": true,\n  \"enable_previous_vers\": false,\n  \"case_sensitive\": false,\n  \"enable_snapshot_dirs\": false,\n  \"homedir_support\": 0,\n  \"mobile\": false,\n  \"browser_access\": false,\n  \"browser_access_settings\": {\n    \"shared_links_enabled\": false,\n    \"link_force_password\": true,\n    \"link_allow_rw\": false,\n    \"external_share_url\": \"string\",\n    \"link_expire_limit\": 0,\n    \"link_auth\": {\n      \"authall\": true,\n      \"allow_groups_ro\": [\n        \"string\"\n      ],\n      \"allow_groups_rw\": [\n        \"string\"\n      ],\n      \"deny_groups\": [\n        \"string\"\n      ],\n      \"allow_users_ro\": [\n        \"string\"\n      ],\n      \"allow_users_rw\": [\n        \"string\"\n      ],\n      \"deny_users\": [\n        \"string\"\n      ]\n    }\n  },\n  \"aio_enabled\": true,\n  \"veto_files\": \"\",\n  \"fruit_enabled\": false,\n  \"smb_encrypt\": \"\",\n  \"auth\": {\n    \"authall\": true,\n    \"rw_groups\": [\n      \"string\"\n    ],\n    \"ro_groups\": [\n      \"string\"\n    ],\n    \"deny_groups\": [\n      \"string\"\n    ],\n    \"ro_users\": [\n      \"string\"\n    ],\n    \"rw_users\": [\n      \"string\"\n    ],\n    \"deny_users\": [\n      \"string\"\n    ]\n  }\n}"
+								},
+								"url": {
+									"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/volumes/{{volume_guid}}/filers/{{filer_serial}}/shares/{{share_id}}/",
+									"protocol": "https",
+									"host": [
+										"{{nmcserver}}"
+									],
+									"port": "{{nmcport}}",
+									"path": [
+										"api",
+										"v1.1",
+										"volumes",
+										"{{volume_guid}}",
+										"filers",
+										"{{filer_serial}}",
+										"shares",
+										"{{share_id}}",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete-Share",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var getToken = true;",
+											"",
+											"if (!pm.environment.get('accessTokenExpiry') || ",
+											"    !pm.environment.get('currentAccessToken')) {",
+											"    console.log('Token or expiry date are missing')",
+											"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+											"    console.log('Token is expired')",
+											"} else {",
+											"    getToken = false;",
+											"    console.log('Token and expiry date are all good');",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/volumes/{{volume_guid}}/filers/{{filer_serial}}/shares/{{share_id}}/",
+									"protocol": "https",
+									"host": [
+										"{{nmcserver}}"
+									],
+									"port": "{{nmcport}}",
+									"path": [
+										"api",
+										"v1.1",
+										"volumes",
+										"{{volume_guid}}",
+										"filers",
+										"{{filer_serial}}",
+										"shares",
+										"{{share_id}}",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get-Shares",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var getToken = true;",
+											"",
+											"if (!pm.environment.get('accessTokenExpiry') || ",
+											"    !pm.environment.get('currentAccessToken')) {",
+											"    console.log('Token or expiry date are missing')",
+											"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+											"    console.log('Token is expired')",
+											"} else {",
+											"    getToken = false;",
+											"    console.log('Token and expiry date are all good');",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/volumes/filers/shares/",
+									"protocol": "https",
+									"host": [
+										"{{nmcserver}}"
+									],
+									"port": "{{nmcport}}",
+									"path": [
+										"api",
+										"v1.1",
+										"volumes",
+										"filers",
+										"shares",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Post-Share-Create",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var getToken = true;",
+											"",
+											"if (!pm.environment.get('accessTokenExpiry') || ",
+											"    !pm.environment.get('currentAccessToken')) {",
+											"    console.log('Token or expiry date are missing')",
+											"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+											"    console.log('Token is expired')",
+											"} else {",
+											"    getToken = false;",
+											"    console.log('Token and expiry date are all good');",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"string\",\n  \"path\": \"string\",\n  \"comment\": \"string\",\n  \"readonly\": false,\n  \"browseable\": true,\n  \"hosts_allow\": \"\",\n  \"hide_unreadable\": true,\n  \"enable_previous_vers\": false,\n  \"case_sensitive\": false,\n  \"enable_snapshot_dirs\": false,\n  \"homedir_support\": 0,\n  \"mobile\": false,\n  \"browser_access\": false,\n  \"browser_access_settings\": {\n    \"shared_links_enabled\": false,\n    \"link_force_password\": true,\n    \"link_allow_rw\": false,\n    \"external_share_url\": \"string\",\n    \"link_expire_limit\": 0,\n    \"link_auth\": {\n      \"authall\": true,\n      \"allow_groups_ro\": [\n        \"string\"\n      ],\n      \"allow_groups_rw\": [\n        \"string\"\n      ],\n      \"deny_groups\": [\n        \"string\"\n      ],\n      \"allow_users_ro\": [\n        \"string\"\n      ],\n      \"allow_users_rw\": [\n        \"string\"\n      ],\n      \"deny_users\": [\n        \"string\"\n      ]\n    }\n  },\n  \"aio_enabled\": true,\n  \"veto_files\": \"\",\n  \"fruit_enabled\": false,\n  \"smb_encrypt\": \"\",\n  \"auth\": {\n    \"authall\": true,\n    \"rw_groups\": [\n      \"string\"\n    ],\n    \"ro_groups\": [\n      \"string\"\n    ],\n    \"deny_groups\": [\n      \"string\"\n    ],\n    \"ro_users\": [\n      \"string\"\n    ],\n    \"rw_users\": [\n      \"string\"\n    ],\n    \"deny_users\": [\n      \"string\"\n    ]\n  }\n}"
+								},
+								"url": {
+									"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/volumes/{{volume_guid}}/filers/{{filer_serial}}/shares/",
+									"protocol": "https",
+									"host": [
+										"{{nmcserver}}"
+									],
+									"port": "{{nmcport}}",
+									"path": [
+										"api",
+										"v1.1",
+										"volumes",
+										"{{volume_guid}}",
+										"filers",
+										"{{filer_serial}}",
+										"shares",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get-List-Shares-for-a-Volume",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var getToken = true;",
+											"",
+											"if (!pm.environment.get('accessTokenExpiry') || ",
+											"    !pm.environment.get('currentAccessToken')) {",
+											"    console.log('Token or expiry date are missing')",
+											"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+											"    console.log('Token is expired')",
+											"} else {",
+											"    getToken = false;",
+											"    console.log('Token and expiry date are all good');",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/volumes/{{volume_guid}}filers/shares/",
+									"protocol": "https",
+									"host": [
+										"{{nmcserver}}"
+									],
+									"port": "{{nmcport}}",
+									"path": [
+										"api",
+										"v1.1",
+										"volumes",
+										"{{volume_guid}}filers",
+										"shares",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get-List-Shares-for-a-Volume-and-Filer",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var getToken = true;",
+											"",
+											"if (!pm.environment.get('accessTokenExpiry') || ",
+											"    !pm.environment.get('currentAccessToken')) {",
+											"    console.log('Token or expiry date are missing')",
+											"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+											"    console.log('Token is expired')",
+											"} else {",
+											"    getToken = false;",
+											"    console.log('Token and expiry date are all good');",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/volumes/{{volume_guid}}/filers/{{filer_serial}}/shares/",
+									"protocol": "https",
+									"host": [
+										"{{nmcserver}}"
+									],
+									"port": "{{nmcport}}",
+									"path": [
+										"api",
+										"v1.1",
+										"volumes",
+										"{{volume_guid}}",
+										"filers",
+										"{{filer_serial}}",
+										"shares",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Snapshots",
+					"item": [
+						{
+							"name": "Get-Snapshot-Statuses",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var getToken = true;",
+											"",
+											"if (!pm.environment.get('accessTokenExpiry') || ",
+											"    !pm.environment.get('currentAccessToken')) {",
+											"    console.log('Token or expiry date are missing')",
+											"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+											"    console.log('Token is expired')",
+											"} else {",
+											"    getToken = false;",
+											"    console.log('Token and expiry date are all good');",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/volumes/filers/snapshots/",
+									"protocol": "https",
+									"host": [
+										"{{nmcserver}}"
+									],
+									"port": "{{nmcport}}",
+									"path": [
+										"api",
+										"v1.1",
+										"volumes",
+										"filers",
+										"snapshots",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get-Snapshot-Statuses-for-a-Volume",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var getToken = true;",
+											"",
+											"if (!pm.environment.get('accessTokenExpiry') || ",
+											"    !pm.environment.get('currentAccessToken')) {",
+											"    console.log('Token or expiry date are missing')",
+											"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+											"    console.log('Token is expired')",
+											"} else {",
+											"    getToken = false;",
+											"    console.log('Token and expiry date are all good');",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/volumes/{{volume_guid}}/filers/snapshots/",
+									"protocol": "https",
+									"host": [
+										"{{nmcserver}}"
+									],
+									"port": "{{nmcport}}",
+									"path": [
+										"api",
+										"v1.1",
+										"volumes",
+										"{{volume_guid}}",
+										"filers",
+										"snapshots",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get-Snapshot-Statuses-for-a-Volume-and-Filer",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var getToken = true;",
+											"",
+											"if (!pm.environment.get('accessTokenExpiry') || ",
+											"    !pm.environment.get('currentAccessToken')) {",
+											"    console.log('Token or expiry date are missing')",
+											"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+											"    console.log('Token is expired')",
+											"} else {",
+											"    getToken = false;",
+											"    console.log('Token and expiry date are all good');",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/volumes/{{volume_guid}}/filers/{{filer_serial}}/snapshots/",
+									"protocol": "https",
+									"host": [
+										"{{nmcserver}}"
+									],
+									"port": "{{nmcport}}",
+									"path": [
+										"api",
+										"v1.1",
+										"volumes",
+										"{{volume_guid}}",
+										"filers",
+										"{{filer_serial}}",
+										"snapshots",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Post-Request-Snapshot-for-Volume",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var getToken = true;",
+											"",
+											"if (!pm.environment.get('accessTokenExpiry') || ",
+											"    !pm.environment.get('currentAccessToken')) {",
+											"    console.log('Token or expiry date are missing')",
+											"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+											"    console.log('Token is expired')",
+											"} else {",
+											"    getToken = false;",
+											"    console.log('Token and expiry date are all good');",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/volumes/{{volume_guid}}/filers/{{filer_serial}}/snapshots/",
+									"protocol": "https",
+									"host": [
+										"{{nmcserver}}"
+									],
+									"port": "{{nmcport}}",
+									"path": [
+										"api",
+										"v1.1",
+										"volumes",
+										"{{volume_guid}}",
+										"filers",
+										"{{filer_serial}}",
+										"snapshots",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Post-Request-Snapshot-for-Volume Copy",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var getToken = true;",
+											"",
+											"if (!pm.environment.get('accessTokenExpiry') || ",
+											"    !pm.environment.get('currentAccessToken')) {",
+											"    console.log('Token or expiry date are missing')",
+											"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+											"    console.log('Token is expired')",
+											"} else {",
+											"    getToken = false;",
+											"    console.log('Token and expiry date are all good');",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"path\": \"string\",\n  \"mode\": \"optimized\"\n}"
+								},
+								"url": {
+									"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/volumes/{{volume_guid}}/global-lock-folders/",
+									"protocol": "https",
+									"host": [
+										"{{nmcserver}}"
+									],
+									"port": "{{nmcport}}",
+									"path": [
+										"api",
+										"v1.1",
+										"volumes",
+										"{{volume_guid}}",
+										"global-lock-folders",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Get-Volumes",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var getToken = true;",
+									"",
+									"if (!pm.environment.get('accessTokenExpiry') || ",
+									"    !pm.environment.get('currentAccessToken')) {",
+									"    console.log('Token or expiry date are missing')",
+									"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+									"    console.log('Token is expired')",
+									"} else {",
+									"    getToken = false;",
+									"    console.log('Token and expiry date are all good');",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/volumes/",
+							"protocol": "https",
+							"host": [
+								"{{nmcserver}}"
+							],
+							"port": "{{nmcport}}",
+							"path": [
+								"api",
+								"v1.1",
+								"volumes",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get-Volume-Connections",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var getToken = true;",
+									"",
+									"if (!pm.environment.get('accessTokenExpiry') || ",
+									"    !pm.environment.get('currentAccessToken')) {",
+									"    console.log('Token or expiry date are missing')",
+									"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+									"    console.log('Token is expired')",
+									"} else {",
+									"    getToken = false;",
+									"    console.log('Token and expiry date are all good');",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/volumes/filer-connections/",
+							"protocol": "https",
+							"host": [
+								"{{nmcserver}}"
+							],
+							"port": "{{nmcport}}",
+							"path": [
+								"api",
+								"v1.1",
+								"volumes",
+								"filer-connections",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get-Volume-Connections-for-a-Volume",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var getToken = true;",
+									"",
+									"if (!pm.environment.get('accessTokenExpiry') || ",
+									"    !pm.environment.get('currentAccessToken')) {",
+									"    console.log('Token or expiry date are missing')",
+									"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+									"    console.log('Token is expired')",
+									"} else {",
+									"    getToken = false;",
+									"    console.log('Token and expiry date are all good');",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/volumes/{{volume_guid}}filer-connections/",
+							"protocol": "https",
+							"host": [
+								"{{nmcserver}}"
+							],
+							"port": "{{nmcport}}",
+							"path": [
+								"api",
+								"v1.1",
+								"volumes",
+								"{{volume_guid}}filer-connections",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get-Volume-Connection",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var getToken = true;",
+									"",
+									"if (!pm.environment.get('accessTokenExpiry') || ",
+									"    !pm.environment.get('currentAccessToken')) {",
+									"    console.log('Token or expiry date are missing')",
+									"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+									"    console.log('Token is expired')",
+									"} else {",
+									"    getToken = false;",
+									"    console.log('Token and expiry date are all good');",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/volumes/{{volume_guid}}filer-connections/{{filer_serial}}",
+							"protocol": "https",
+							"host": [
+								"{{nmcserver}}"
+							],
+							"port": "{{nmcport}}",
+							"path": [
+								"api",
+								"v1.1",
+								"volumes",
+								"{{volume_guid}}filer-connections",
+								"{{filer_serial}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get-List-Filer-Settings-for-Volume",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var getToken = true;",
+									"",
+									"if (!pm.environment.get('accessTokenExpiry') || ",
+									"    !pm.environment.get('currentAccessToken')) {",
+									"    console.log('Token or expiry date are missing')",
+									"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+									"    console.log('Token is expired')",
+									"} else {",
+									"    getToken = false;",
+									"    console.log('Token and expiry date are all good');",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/volumes/{{volume_guid}}/filers/",
+							"protocol": "https",
+							"host": [
+								"{{nmcserver}}"
+							],
+							"port": "{{nmcport}}",
+							"path": [
+								"api",
+								"v1.1",
+								"volumes",
+								"{{volume_guid}}",
+								"filers",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post-Volume-Create",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var getToken = true;",
+									"",
+									"if (!pm.environment.get('accessTokenExpiry') || ",
+									"    !pm.environment.get('currentAccessToken')) {",
+									"    console.log('Token or expiry date are missing')",
+									"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+									"    console.log('Token is expired')",
+									"} else {",
+									"    getToken = false;",
+									"    console.log('Token and expiry date are all good');",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"filer_serial_number\": \"string\",\n  \"name\": \"string\",\n  \"protocols\": {\n    \"permissions_policy\": \"NTFS60\",\n    \"protocols\": [\n      \"CIFS\"\n    ]\n  },\n  \"antivirus_service\": {\n    \"enabled\": true,\n    \"days\": {\n      \"sun\": true,\n      \"mon\": true,\n      \"tue\": true,\n      \"wed\": true,\n      \"thu\": true,\n      \"fri\": true,\n      \"sat\": true\n    },\n    \"check_files_immediately\": true,\n    \"allday\": true,\n    \"start\": 0,\n    \"stop\": 0,\n    \"frequency\": 0\n  },\n  \"quota\": 0,\n  \"snapshot_retention\": {\n    \"retain\": \"INFINITE\",\n    \"number\": 0,\n    \"years\": 0,\n    \"months\": 0,\n    \"days\": 0\n  },\n  \"cloud_io\": {\n    \"dedupe\": true,\n    \"compression\": true,\n    \"chunk_size\": 0\n  },\n  \"provider\": {\n    \"cred_id\": \"string\",\n    \"name\": \"string\",\n    \"shortname\": \"amazons3\",\n    \"location\": \"string\"\n  },\n  \"auth\": {\n    \"authenticated_access\": true,\n    \"policy\": \"ads\",\n    \"policy_label\": \"string\"\n  },\n  \"options\": {\n    \"auto_provision_cred\": false,\n    \"create_new_key\": true,\n    \"key_name\": \"string\",\n    \"create_default_access_point\": true\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/volumes/",
+							"protocol": "https",
+							"host": [
+								"{{nmcserver}}"
+							],
+							"port": "{{nmcport}}",
+							"path": [
+								"api",
+								"v1.1",
+								"volumes",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get-Volume",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var getToken = true;",
+									"",
+									"if (!pm.environment.get('accessTokenExpiry') || ",
+									"    !pm.environment.get('currentAccessToken')) {",
+									"    console.log('Token or expiry date are missing')",
+									"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+									"    console.log('Token is expired')",
+									"} else {",
+									"    getToken = false;",
+									"    console.log('Token and expiry date are all good');",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/volumes/{{volume_guid}}/",
+							"protocol": "https",
+							"host": [
+								"{{nmcserver}}"
+							],
+							"port": "{{nmcport}}",
+							"path": [
+								"api",
+								"v1.1",
+								"volumes",
+								"{{volume_guid}}",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get-Volume-Settings-for-a-Filer",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var getToken = true;",
+									"",
+									"if (!pm.environment.get('accessTokenExpiry') || ",
+									"    !pm.environment.get('currentAccessToken')) {",
+									"    console.log('Token or expiry date are missing')",
+									"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+									"    console.log('Token is expired')",
+									"} else {",
+									"    getToken = false;",
+									"    console.log('Token and expiry date are all good');",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/volumes/{{volume_guid}}/filers/{{filer_serial}}/",
+							"protocol": "https",
+							"host": [
+								"{{nmcserver}}"
+							],
+							"port": "{{nmcport}}",
+							"path": [
+								"api",
+								"v1.1",
+								"volumes",
+								"{{volume_guid}}",
+								"filers",
+								"{{filer_serial}}",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Patch-Volume-Settings-for-a-Filer",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var getToken = true;",
+									"",
+									"if (!pm.environment.get('accessTokenExpiry') || ",
+									"    !pm.environment.get('currentAccessToken')) {",
+									"    console.log('Token or expiry date are missing')",
+									"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+									"    console.log('Token is expired')",
+									"} else {",
+									"    getToken = false;",
+									"    console.log('Token and expiry date are all good');",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/volumes/{{volume_guid}}/filers/{{filer_serial}}/",
+							"protocol": "https",
+							"host": [
+								"{{nmcserver}}"
+							],
+							"port": "{{nmcport}}",
+							"path": [
+								"api",
+								"v1.1",
+								"volumes",
+								"{{volume_guid}}",
+								"filers",
+								"{{filer_serial}}",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Patch-Volume",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var getToken = true;",
+									"",
+									"if (!pm.environment.get('accessTokenExpiry') || ",
+									"    !pm.environment.get('currentAccessToken')) {",
+									"    console.log('Token or expiry date are missing')",
+									"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+									"    console.log('Token is expired')",
+									"} else {",
+									"    getToken = false;",
+									"    console.log('Token and expiry date are all good');",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"filer_serial_number\": \"string\",\n  \"name\": \"string\",\n  \"protocols\": {\n    \"permissions_policy\": \"NTFS60\",\n    \"protocols\": [\n      \"CIFS\"\n    ]\n  },\n  \"antivirus_service\": {\n    \"enabled\": true,\n    \"days\": {\n      \"sun\": true,\n      \"mon\": true,\n      \"tue\": true,\n      \"wed\": true,\n      \"thu\": true,\n      \"fri\": true,\n      \"sat\": true\n    },\n    \"check_files_immediately\": true,\n    \"allday\": true,\n    \"start\": 0,\n    \"stop\": 0,\n    \"frequency\": 0\n  },\n  \"quota\": 0,\n  \"snapshot_retention\": {\n    \"retain\": \"INFINITE\",\n    \"number\": 0,\n    \"years\": 0,\n    \"months\": 0,\n    \"days\": 0\n  },\n  \"cloud_io\": {\n    \"dedupe\": true,\n    \"compression\": true,\n    \"chunk_size\": 0\n  },\n  \"provider\": {\n    \"cred_id\": \"string\",\n    \"name\": \"string\",\n    \"shortname\": \"amazons3\",\n    \"location\": \"string\"\n  },\n  \"auth\": {\n    \"authenticated_access\": true,\n    \"policy\": \"ads\",\n    \"policy_label\": \"string\"\n  },\n  \"options\": {\n    \"auto_provision_cred\": false,\n    \"create_new_key\": true,\n    \"key_name\": \"string\",\n    \"create_default_access_point\": true\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/volumes/{{volume_guid}}/",
+							"protocol": "https",
+							"host": [
+								"{{nmcserver}}"
+							],
+							"port": "{{nmcport}}",
+							"path": [
+								"api",
+								"v1.1",
+								"volumes",
+								"{{volume_guid}}",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Notifications",
+			"item": [
+				{
+					"name": "Get-Notification-List",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var getToken = true;",
+									"",
+									"if (!pm.environment.get('accessTokenExpiry') || ",
+									"    !pm.environment.get('currentAccessToken')) {",
+									"    console.log('Token or expiry date are missing')",
+									"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+									"    console.log('Token is expired')",
+									"} else {",
+									"    getToken = false;",
+									"    console.log('Token and expiry date are all good');",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/notifications/",
+							"protocol": "https",
+							"host": [
+								"{{nmcserver}}"
+							],
+							"port": "{{nmcport}}",
+							"path": [
+								"api",
+								"v1.1",
+								"notifications",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get-Notification",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var getToken = true;",
+									"",
+									"if (!pm.environment.get('accessTokenExpiry') || ",
+									"    !pm.environment.get('currentAccessToken')) {",
+									"    console.log('Token or expiry date are missing')",
+									"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+									"    console.log('Token is expired')",
+									"} else {",
+									"    getToken = false;",
+									"    console.log('Token and expiry date are all good');",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/notifications/979/",
+							"protocol": "https",
+							"host": [
+								"{{nmcserver}}"
+							],
+							"port": "{{nmcport}}",
+							"path": [
+								"api",
+								"v1.1",
+								"notifications",
+								"979",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Messages",
+			"item": [
+				{
+					"name": "Get-Message-List",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var getToken = true;",
+									"",
+									"if (!pm.environment.get('accessTokenExpiry') || ",
+									"    !pm.environment.get('currentAccessToken')) {",
+									"    console.log('Token or expiry date are missing')",
+									"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+									"    console.log('Token is expired')",
+									"} else {",
+									"    getToken = false;",
+									"    console.log('Token and expiry date are all good');",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/messages",
+							"protocol": "https",
+							"host": [
+								"{{nmcserver}}"
+							],
+							"port": "{{nmcport}}",
+							"path": [
+								"api",
+								"v1.1",
+								"messages"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get-Message",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var getToken = true;",
+									"",
+									"if (!pm.environment.get('accessTokenExpiry') || ",
+									"    !pm.environment.get('currentAccessToken')) {",
+									"    console.log('Token or expiry date are missing')",
+									"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+									"    console.log('Token is expired')",
+									"} else {",
+									"    getToken = false;",
+									"    console.log('Token and expiry date are all good');",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/messages/{{message_id}}/",
+							"protocol": "https",
+							"host": [
+								"{{nmcserver}}"
+							],
+							"port": "{{nmcport}}",
+							"path": [
+								"api",
+								"v1.1",
+								"messages",
+								"{{message_id}}",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete-Message",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var getToken = true;",
+									"",
+									"if (!pm.environment.get('accessTokenExpiry') || ",
+									"    !pm.environment.get('currentAccessToken')) {",
+									"    console.log('Token or expiry date are missing')",
+									"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+									"    console.log('Token is expired')",
+									"} else {",
+									"    getToken = false;",
+									"    console.log('Token and expiry date are all good');",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/messages/{{message_id}}/",
+							"protocol": "https",
+							"host": [
+								"{{nmcserver}}"
+							],
+							"port": "{{nmcport}}",
+							"path": [
+								"api",
+								"v1.1",
+								"messages",
+								"{{message_id}}",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Get-Template",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var getToken = true;",
+							"",
+							"if (!pm.environment.get('accessTokenExpiry') || ",
+							"    !pm.environment.get('currentAccessToken')) {",
+							"    console.log('Token or expiry date are missing')",
+							"} else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
+							"    console.log('Token is expired')",
+							"} else {",
+							"    getToken = false;",
+							"    console.log('Token and expiry date are all good');",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "https://{{nmcserver}}:{{nmcport}}/api/v1.1/",
+					"protocol": "https",
+					"host": [
+						"{{nmcserver}}"
+					],
+					"port": "{{nmcport}}",
+					"path": [
+						"api",
+						"v1.1",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "apikey",
+		"apikey": [
+			{
+				"key": "value",
+				"value": "Token {{currentAccessToken}}",
+				"type": "string"
+			},
+			{
+				"key": "key",
+				"value": "Authorization",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
