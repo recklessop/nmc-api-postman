@@ -3,6 +3,8 @@ Postman Collection for the Nasuni NMC API
 
 ## Intro
 
+This Postman collection can be used to get going quickly with the Nasuni NMC API. using it will allow you to get data from the NMC for manual use cases or to aid in script development.
+
 ## Usage
 
 To use this postman collection you can either download or clone the repository to your local computer and import the folder or files or you can import directly from the GitHub Repo.
